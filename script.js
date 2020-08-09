@@ -30,6 +30,7 @@ function sortTasks() {
 }
 
 function toggleInputButtons() {
+  
   btnReset.prop('disabled', inpNewTask.val() == '')
   btnAdd.prop('disabled', inpNewTask.val() == '')
   btnSort.prop('disabled', ulTasks.children().length < 1)
