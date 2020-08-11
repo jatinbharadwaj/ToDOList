@@ -4,14 +4,33 @@ let btnReset = $('#btnReset')
 let btnSort = $('#btnSort')
 let btnCleanup = $('#btnCleanup')
 let inpNewTask = $('#inpNewTask')
-let btnUp = $('#btnUp')
-let btnDown = $('btnDown')
+
 
 function addItem() {
   let listItem = $('<li>', {
     'class': 'list-group-item',
     text: inpNewTask.val()
-  })
+  }).append(
+    $('<button>')
+        .text('⬆️')
+        .attr('class','btnup')
+        .click((ev)=>{
+            $(ev.target)
+            .parent()
+                .insertBefore($(ev.target).parent().prev())
+         listItem.toggleClass('done')
+        })
+)
+.append(
+    $('<button>')
+        .text('⬇️').attr('class','btndn')
+        .click((ev)=>{
+            $(ev.target)
+                .parent()
+                .insertAfter($(ev.target).parent().next())
+      listItem.toggleClass('done')
+      })
+)
   listItem.click(() => {
     listItem.toggleClass('done')
   })
@@ -30,7 +49,6 @@ function sortTasks() {
 }
 
 function toggleInputButtons() {
-  
   btnReset.prop('disabled', inpNewTask.val() == '')
   btnAdd.prop('disabled', inpNewTask.val() == '')
   btnSort.prop('disabled', ulTasks.children().length < 1)
