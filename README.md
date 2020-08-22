@@ -1,2 +1,2 @@
 # ToDOList
-A Simple ToDoList using jQuery 
+A Simple ToDoList using ExpressJS
