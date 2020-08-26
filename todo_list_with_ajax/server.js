@@ -15,8 +15,8 @@ app.get('/todo',(req,res)=>{
 })
 
 
-app.get('/js',(req,res)=>{
-    res.send('<script>console.log("Hello")</script>')
+app.get('/hello',(req,res)=>{
+    res.send(`<H1>console.log("Hello")</H1>`)
 })
 
 app.listen(4444,()=>{
