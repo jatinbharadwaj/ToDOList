@@ -1,40 +1,40 @@
- 
+let ulTasks = $('#ulTasks')
+let btnAdd = $('#btnAdd')
+let btnReset = $('#btnReset')
+let btnSort = $('#btnSort')
+let btnCleanup = $('#btnCleanup')
+let inpNewTask = $('#inpNewTask')
+  
+    function refreshtodolist(){
+        ulTasks.empty()
+        $.get('/todo',(data)=>{
+            for(let i = 0 ; i<data.length ; i++){
+                // $('#list').append(
+                //     $('<li>').text(data[i])
+                // )
+                addItem(data[i])
+            }
+        })
+    }
 
-    // function refreshtodolist(){
-    //     $('#list').empty()
-    //     $.get('/todo',(data)=>{
-    //         for(let i = 0 ; i<data.length ; i++){
-    //             $('#list').append(
-    //                 $('<li>').text(data[i])
-    //             )
-    //         }
-    //     })
-    // }
+    refreshtodolist()
 
-    // refreshtodolist()
+    btnAdd.click(()=>{
+        let val = inpNewTask.val()
+        $.get(`/addtodo?task=${val}`,(data)=>{
+            if(data == 'success'){
+                refreshtodolist()
+            }
+        })
+    })
 
-    // $('#btn').click(()=>{
-    //     // console.log('clicked')
-    //     let val = $('#inp').val()
-    //     console.log(val)
-    //     $.get(`/addtodo?task=${val}`,(data)=>{
-    //         if(data == 'success'){
-    //             refreshtodolist()
-    //         }
-    //     })
-    // })
-    let ulTasks = $('#ulTasks')
-    let btnAdd = $('#btnAdd')
-    let btnReset = $('#btnReset')
-    let btnSort = $('#btnSort')
-    let btnCleanup = $('#btnCleanup')
-    let inpNewTask = $('#inpNewTask')
     
     
-    function addItem() {
+    function addItem(data) {
       let listItem = $('<li>', {
         'class': 'list-group-item',
-        text: inpNewTask.val()
+        // text: inpNewTask.val()
+        text: data
       }).append(
         $('<button>')
             .text('⬆️')
@@ -44,6 +44,11 @@
                 .parent()
                     .insertBefore($(ev.target).parent().prev())
              listItem.toggleClass('done')
+             $.get(`/up?t=${2}`,(data)=>{
+                 if(data == 'success'){
+                    console.log("here")
+                 }
+             })
             })
     )
     .append(
@@ -62,13 +67,14 @@
       ulTasks.append(listItem)
       inpNewTask.val('')
       toggleInputButtons()
+
     }
-    
+// ------------------------- ADD ITEM END ------------------- //
     function clearDone() {
       $('#ulTasks .done').remove()
       toggleInputButtons()
     }
-    
+
     function sortTasks() {
       $('#ulTasks .done').appendTo(ulTasks)
     }
@@ -81,11 +87,18 @@
     }
     
     inpNewTask.keypress((e) => {
-      if (e.which == 13) addItem()
+      if (e.which == 13){
+        let val = inpNewTask.val()
+        $.get(`/addtodo?task=${val}`,(data)=>{
+            if(data == 'success'){
+                refreshtodolist()
+            }
+        })
+      }
     })
     inpNewTask.on('input', toggleInputButtons)
     
-    btnAdd.click(addItem)
+    // btnAdd.click(addItem)
     btnReset.click(() => {
       inpNewTask.val('')
       toggleInputButtons()
