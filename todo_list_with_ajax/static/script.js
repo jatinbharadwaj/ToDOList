@@ -9,10 +9,7 @@ let inpNewTask = $('#inpNewTask')
         ulTasks.empty()
         $.get('/todo',(data)=>{
             for(let i = 0 ; i<data.length ; i++){
-                // $('#list').append(
-                //     $('<li>').text(data[i])
-                // )
-                addItem(data[i])
+                addItem(data[i],i)
             }
         })
     }
@@ -27,14 +24,12 @@ let inpNewTask = $('#inpNewTask')
             }
         })
     })
-
     
-    
-    function addItem(data) {
+    function addItem(data,i) {
       let listItem = $('<li>', {
         'class': 'list-group-item',
-        // text: inpNewTask.val()
-        text: data
+        'id': i,
+        text:data
       }).append(
         $('<button>')
             .text('⬆️')
@@ -44,8 +39,11 @@ let inpNewTask = $('#inpNewTask')
                 .parent()
                     .insertBefore($(ev.target).parent().prev())
              listItem.toggleClass('done')
-             $.get(`/up?t=${2}`,(data)=>{
+
+             $.get(`/up?i=${i}`,(data)=>{
+                console.log(i)
                  if(data == 'success'){
+                  refreshtodolist()
                     console.log("here")
                  }
              })
@@ -59,6 +57,13 @@ let inpNewTask = $('#inpNewTask')
                     .parent()
                     .insertAfter($(ev.target).parent().next())
           listItem.toggleClass('done')
+          $.get(`/down?i=${i}`,(data)=>{
+            console.log(i)
+             if(data == 'success'){
+              refreshtodolist()
+                console.log("down")
+             }
+         })
           })
     )
       listItem.click(() => {
@@ -70,22 +75,25 @@ let inpNewTask = $('#inpNewTask')
 
     }
 // ------------------------- ADD ITEM END ------------------- //
+   
     function clearDone() {
       $('#ulTasks .done').remove()
       toggleInputButtons()
+      
     }
 
+// -------------------------- Delete End -------------------------//
     function sortTasks() {
       $('#ulTasks .done').appendTo(ulTasks)
     }
-    
+// --------------------------- Sort Task END ----------------------// 
     function toggleInputButtons() {
       btnReset.prop('disabled', inpNewTask.val() == '')
       btnAdd.prop('disabled', inpNewTask.val() == '')
       btnSort.prop('disabled', ulTasks.children().length < 1)
       btnCleanup.prop('disabled', ulTasks.children().length < 1)
     }
-    
+// ------------------------Toggle Button End ----------------------//
     inpNewTask.keypress((e) => {
       if (e.which == 13){
         let val = inpNewTask.val()
