@@ -48,8 +48,7 @@ let inpNewTask = $('#inpNewTask')
                  }
              })
             })
-    )
-    .append(
+    ).append(
         $('<button>')
             .text('⬇️').attr('class','btndn')
             .click((ev)=>{
@@ -83,17 +82,22 @@ let inpNewTask = $('#inpNewTask')
     }
 
 // -------------------------- Delete End -------------------------//
+  
     function sortTasks() {
       $('#ulTasks .done').appendTo(ulTasks)
     }
+
 // --------------------------- Sort Task END ----------------------// 
+    
     function toggleInputButtons() {
       btnReset.prop('disabled', inpNewTask.val() == '')
       btnAdd.prop('disabled', inpNewTask.val() == '')
       btnSort.prop('disabled', ulTasks.children().length < 1)
       btnCleanup.prop('disabled', ulTasks.children().length < 1)
     }
+
 // ------------------------Toggle Button End ----------------------//
+    
     inpNewTask.keypress((e) => {
       if (e.which == 13){
         let val = inpNewTask.val()

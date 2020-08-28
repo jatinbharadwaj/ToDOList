@@ -37,6 +37,8 @@ app.get('/down',(req,res)=>{
     res.send('success')
 })
 
+app.get('/')
+
 app.listen(4444,()=>{
     console.log('Server started at http://localhost:4444')
 })
